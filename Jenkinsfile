@@ -14,13 +14,13 @@ pipeline{
 
         stage('Build Jar'){
             steps{
-                sh 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('Build Image'){
             steps{
-                sh 'docker build -t=vinsdocker/selenium .'
+                bat 'docker build -t=cityuderek/vinsdocker-selenium .'
             }
         }
 
@@ -30,9 +30,9 @@ pipeline{
                 DOCKER_HUB = credentials('dockerhub-creds')
             }
             steps{
-                // There might be a warning.
-                sh 'docker login -u ${DOCKER_HUB_USR} -p ${DOCKER_HUB_PSW}'
-                sh 'docker push vinsdocker/selenium'
+                // sh 'echo ${DOCKER_HUB_PSW} | docker login -u ${DOCKER_HUB_USR} --password-stdin'
+                bat 'echo %DOCKER_HUB_PSW% | docker login -u %DOCKER_HUB_USR% --password-stdin'
+                bat 'docker push cityuderek/vinsdocker-selenium'
             }
         }
 
