@@ -31,7 +31,8 @@ pipeline{
             }
             steps{
                 // sh 'echo ${DOCKER_HUB_PSW} | docker login -u ${DOCKER_HUB_USR} --password-stdin'
-                bat 'echo %DOCKER_HUB_PSW% | docker login -u %DOCKER_HUB_USR% --password-stdin'
+                // bat 'echo %DOCKER_HUB_PSW% | docker login -u %DOCKER_HUB_USR% --password-stdin'         not working in windows
+                bat 'docker login -u %DOCKER_HUB_USR% -p %DOCKER_HUB_PSW%'
                 bat 'docker push cityuderek/vinsdocker-selenium'
             }
         }
