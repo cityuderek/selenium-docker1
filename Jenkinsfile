@@ -20,7 +20,7 @@ pipeline{
 
         stage('Build Image'){
             steps{
-                bat 'docker build -t=cityuderek/vinsdocker-selenium .'
+                bat 'docker build -t=cityuderek/vinsdocker-selenium:latest .'
             }
         }
 
@@ -30,10 +30,11 @@ pipeline{
                 DOCKER_HUB = credentials('dockerhub-creds')
             }
             steps{
-                // sh 'echo ${DOCKER_HUB_PSW} | docker login -u ${DOCKER_HUB_USR} --password-stdin'
-                // bat 'echo %DOCKER_HUB_PSW% | docker login -u %DOCKER_HUB_USR% --password-stdin'         not working in windows
+                // There might be a warning.
                 bat 'docker login -u %DOCKER_HUB_USR% -p %DOCKER_HUB_PSW%'
-                bat 'docker push cityuderek/vinsdocker-selenium'
+                bat 'docker push cityuderek/vinsdocker-selenium:latest'
+                bat 'docker tag cityuderek/vinsdocker-selenium:latest cityuderek/vinsdocker-selenium:%BUILD_NUMBER%'
+                bat 'docker push cityuderek/vinsdocker-selenium:%BUILD_NUMBER%'
             }
         }
 
