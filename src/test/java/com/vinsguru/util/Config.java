@@ -25,7 +25,7 @@ public class Config {
         }
 
         // print
-        log.info("Test Properties");
+        log.info("Test Properties 001");
         log.info("-----------------");
         for(String key: properties.stringPropertyNames()){
             log.info("{}={}", key, properties.getProperty(key));

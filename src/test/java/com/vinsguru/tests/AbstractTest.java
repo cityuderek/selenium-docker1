@@ -36,6 +36,7 @@ public abstract class AbstractTest {
     @BeforeTest
     public void setDriver(ITestContext ctx) throws MalformedURLException {
         this.driver = Boolean.parseBoolean(Config.get(Constants.GRID_ENABLED)) ? getRemoteDriver() : getLocalDriver();
+        log.info("setDriver=" + driver);
         ctx.setAttribute(Constants.DRIVER, this.driver);
     }
 
