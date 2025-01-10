@@ -26,6 +26,10 @@ public class DashboardPage extends AbstractPage {
 
     @FindBy(xpath = "//span[contains(@class, 'RaConfigurable-root')]")
     private WebElement title;
+
+    @FindBy(xpath = "//a[contains(@class, 'MuiButtonBase-root') and text()='Create']")
+    private WebElement btnCreate;
+
 //
 //    @FindBy(id = "profit-margin")
 //    private WebElement profitMarginElement;
@@ -60,6 +64,14 @@ public class DashboardPage extends AbstractPage {
         return sideMenu.isDisplayed();
     }
 
+    public boolean isAtStaffList() {
+    return wait.until(ExpectedConditions.textToBePresentInElement(title, "Staff"));
+    }
+
+    public boolean isTitleEquals(String expTitle) {
+    return wait.until(ExpectedConditions.textToBePresentInElement(title, expTitle));
+    }
+    
 //    public String getMonthlyEarning(){
 //        return this.monthlyEarningElement.getText();
 //    }
@@ -105,6 +117,11 @@ public class DashboardPage extends AbstractPage {
     	btnSystem.click();
         wait.until(ExpectedConditions.visibilityOf(btnStaff));
         btnStaff.click();
+    }
+
+    public void gotoCreate(){
+        wait.until(ExpectedConditions.visibilityOf(btnCreate));
+        btnCreate.click();
     }
     
     public void logout(){

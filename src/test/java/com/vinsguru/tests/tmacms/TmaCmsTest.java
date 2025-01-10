@@ -62,11 +62,21 @@ public class TmaCmsTest extends AbstractTest {
     public void gotoStaffList(){
         dashboardPage.gotoStaffList();
         String title = dashboardPage.getTitleText();
-        log.debug("title={}", title);
-        Assert.assertTrue(dashboardPage.isAt());
+        log.debug("gotoStaffList title={}", title);
+        Assert.assertTrue(dashboardPage.isTitleEquals("Staff"));
+//        Assert.assertTrue(dashboardPage.isAt());
+        
     }
 
     @Test(dependsOnMethods = "gotoStaffList")
+    public void gotoStaffCreate(){
+        dashboardPage.gotoCreate();
+        String title = dashboardPage.getTitleText();
+        log.debug("gotoStaffCreate title={}", title);
+        Assert.assertTrue(dashboardPage.isTitleEquals("Create Staff"));
+    }
+
+    @Test(dependsOnMethods = "gotoStaffCreate")
     public void logoutTest(){
         dashboardPage.logout();
         Assert.assertTrue(loginPage.isAt());

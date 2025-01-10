@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="tma-cms" parallel="tests" thread-count="1">
+    <test name="user-derek_cms">
+        <parameter name="testDataPath" value="test-data/tma-cms/derek_cms.json" />
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.vinsguru.tests.tmacms.TmaCmsTest"/>
+        </classes>
+    </test>
+</suite>
