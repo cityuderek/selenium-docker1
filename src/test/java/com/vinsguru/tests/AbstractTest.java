@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
@@ -20,6 +21,7 @@ import org.testng.annotations.Listeners;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 
 @Listeners({TestListener.class})
 public abstract class AbstractTest {
@@ -27,6 +29,7 @@ public abstract class AbstractTest {
     private static final Logger log = LoggerFactory.getLogger(AbstractTest.class);
 
     protected WebDriver driver;
+    protected WebDriverWait wait;
 
     @BeforeSuite
     public void setupConfig(){
@@ -36,6 +39,7 @@ public abstract class AbstractTest {
     @BeforeTest
     public void setDriver(ITestContext ctx) throws MalformedURLException {
         this.driver = Boolean.parseBoolean(Config.get(Constants.GRID_ENABLED)) ? getRemoteDriver() : getLocalDriver();
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         log.info("setDriver=" + driver);
         ctx.setAttribute(Constants.DRIVER, this.driver);
     }

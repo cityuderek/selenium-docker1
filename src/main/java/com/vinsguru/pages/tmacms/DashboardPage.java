@@ -1,6 +1,10 @@
 package com.vinsguru.pages.tmacms;
 
 import com.vinsguru.pages.AbstractPage;
+
+import ch.qos.logback.core.util.StringUtil;
+
+import org.apache.commons.exec.util.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,23 +16,27 @@ public class DashboardPage extends AbstractPage {
 
     private static final Logger log = LoggerFactory.getLogger(DashboardPage.class);
 
+    protected String resourceId = "";
+
+    protected String resourceAction = "list";
+    
     @FindBy(xpath = "//main[@class='RaLayout-contentWithSidebar']")
-    private WebElement sideMenu;
+    protected WebElement sideMenu;
 
     @FindBy(xpath = "//button[@aria-label='Profile']")
-    private WebElement btnProfile;
+    protected WebElement btnProfile;
 
     @FindBy(xpath = "//main[@class='RaLayout-contentWithSidebar']//div[text()='System']")
-    private WebElement btnSystem;
+    protected WebElement btnSystem;
 
     @FindBy(xpath = "//main[@class='RaLayout-contentWithSidebar']//a[text()='Staff']")
-    private WebElement btnStaff;
+    protected WebElement btnStaff;
 
     @FindBy(xpath = "//span[contains(@class, 'RaConfigurable-root')]")
-    private WebElement title;
+    protected WebElement title;
 
     @FindBy(xpath = "//a[contains(@class, 'MuiButtonBase-root') and text()='Create']")
-    private WebElement btnCreate;
+    protected WebElement btnCreate;
 
 //
 //    @FindBy(id = "profit-margin")
@@ -49,7 +57,7 @@ public class DashboardPage extends AbstractPage {
     // prefer id / name / css
 //    @FindBy(xpath = "//span[text()='Logout']")
     @FindBy(xpath = "//div[contains(@class, 'MuiListItemText-root')]//span[text()='Logout']")
-    private WebElement logoutLink;
+    protected WebElement logoutLink;
 
 //    @FindBy(css = "#logoutModal a")
 //    private WebElement modalLogoutButton;
@@ -58,18 +66,56 @@ public class DashboardPage extends AbstractPage {
         super(driver);
     }
 
-    @Override
-    public boolean isAt() {
-        this.wait.until(ExpectedConditions.visibilityOf(sideMenu));
-        return sideMenu.isDisplayed();
+    public DashboardPage(WebDriver driver, String resourceId, String resourceAction) {
+        super(driver);
+        this.resourceId = resourceId;
+        this.resourceAction = resourceAction;
     }
 
-    public boolean isAtStaffList() {
-    return wait.until(ExpectedConditions.textToBePresentInElement(title, "Staff"));
+    @Override
+    public boolean isAt() {
+//    	log.debug("isAt resourceId=" + resourceId + ", resourceAction=" + resourceAction + ", url=" + driver.getCurrentUrl());
+        this.wait.until(ExpectedConditions.visibilityOf(sideMenu));
+//    	log.debug("isAt 222");
+        if(!sideMenu.isDisplayed()) {
+        	log.debug("!sideMenu");
+        	return false;
+        }
+        if (resourceAction.equals("list")) {
+        	return isAtListPage();
+        }
+        if (resourceAction.equals("edit")) {
+        	return isAtEditPage();
+        }
+        if (resourceAction.equals("create")) {
+        	return isAtCreatePage();
+        }
+//    	log.debug("resourceId=" + resourceId);
+        return false;
+    }
+
+    public boolean isAtListPage() {
+    	String resourceId = this.getResourceId();
+    	return StringUtil.isNullOrEmpty(resourceId) || wait.until(ExpectedConditions.urlMatches(".*/#/fdmin/" + resourceId));
+    }
+
+    public boolean isAtEditPage() {
+    	String resourceId = this.getResourceId();
+//    	log.debug("isAtEditPage regex=" + ".*/#/fdmin/" + resourceId + "/\\d+");
+    	return StringUtil.notNullNorEmpty(resourceId) && wait.until(ExpectedConditions.urlMatches(".*/#/fdmin/" + resourceId + "/\\d+"));
+    }
+
+    public boolean isAtCreatePage() {
+    	String resourceId = this.getResourceId();
+    	return StringUtil.notNullNorEmpty(resourceId) && wait.until(ExpectedConditions.urlMatches(".*/#/fdmin/" + resourceId + "/create"));
     }
 
     public boolean isTitleEquals(String expTitle) {
-    return wait.until(ExpectedConditions.textToBePresentInElement(title, expTitle));
+    	return wait.until(ExpectedConditions.textToBePresentInElement(title, expTitle));
+    }
+
+    public String getResourceId() {
+        return resourceId;
     }
     
 //    public String getMonthlyEarning(){
