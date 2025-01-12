@@ -56,6 +56,12 @@
             <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- JavaMail dependency -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>selenium-docker</finalName>

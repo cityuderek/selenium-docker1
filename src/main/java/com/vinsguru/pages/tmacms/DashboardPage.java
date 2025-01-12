@@ -38,6 +38,9 @@ public class DashboardPage extends AbstractPage {
     @FindBy(xpath = "//a[contains(@class, 'MuiButtonBase-root') and text()='Create']")
     protected WebElement btnCreate;
 
+    @FindBy(xpath = "//div[@role='presentation']//button[text()='Confirm']")
+    protected WebElement btnModalConfirm;
+
 //
 //    @FindBy(id = "profit-margin")
 //    private WebElement profitMarginElement;
@@ -74,7 +77,7 @@ public class DashboardPage extends AbstractPage {
 
     @Override
     public boolean isAt() {
-//    	log.debug("isAt resourceId=" + resourceId + ", resourceAction=" + resourceAction + ", url=" + driver.getCurrentUrl());
+    	log.debug("isAt resourceId=" + resourceId + ", resourceAction=" + resourceAction + ", url=" + driver.getCurrentUrl());
         this.wait.until(ExpectedConditions.visibilityOf(sideMenu));
 //    	log.debug("isAt 222");
         if(!sideMenu.isDisplayed()) {
@@ -96,7 +99,7 @@ public class DashboardPage extends AbstractPage {
 
     public boolean isAtListPage() {
     	String resourceId = this.getResourceId();
-    	return StringUtil.isNullOrEmpty(resourceId) || wait.until(ExpectedConditions.urlMatches(".*/#/fdmin/" + resourceId));
+    	return StringUtil.isNullOrEmpty(resourceId) || wait.until(ExpectedConditions.urlMatches(".*/#/fdmin/" + resourceId + "^"));
     }
 
     public boolean isAtEditPage() {

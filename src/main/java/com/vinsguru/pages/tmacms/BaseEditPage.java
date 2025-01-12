@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jfa.selenium.util.SeleniumUtil;
+
 public class BaseEditPage extends DashboardPage {
     private static final Logger log = LoggerFactory.getLogger(BaseCreatePage.class);
 
@@ -30,5 +32,7 @@ public class BaseEditPage extends DashboardPage {
     
     public void clickDelBtn() {
     	btnDel.click();
+    	SeleniumUtil.waitVisible(btnModalConfirm, wait);
+    	btnModalConfirm.click();
     }
 }
